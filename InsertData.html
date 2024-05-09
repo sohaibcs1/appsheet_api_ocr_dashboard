@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #00688B;
+        }
+    </style>
+</head>
+<body>
+    <h1>Insert Data</h1>
+    <form id="insert-data-form">
+        <label for="value1">Distance:</label>
+        <input type="text" id="value1" name="value1">
+
+        <label for="value2">LIE:</label>
+        <input type="text" id="value2" name="value2">
+
+        <label for="value3">P:</label>
+        <input type="text" id="value3" name="value3">
+
+        <button type="submit">Insert Data</button>
+        <div id="success-message"></div>
+    </form>
+
+
+    <script>
+        const form = document.getElementById('insert-data-form');
+        const successMessage = document.getElementById('success-message'); // Get the success message element
+        
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+        
+            // Get form data
+            const formData = new FormData(form);
+        
+            // Create data object
+            const data = {
+                value1: formData.get('value1'),
+                value2: formData.get('value2'),
+                value3: formData.get('value3')
+            };
+        
+            // Call API to insert data
+            fetch('Insert.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Log API response
+                form.reset(); // Reset form
+                // Display success message
+                successMessage.textContent = 'Operation Performed!';
+            })
+            .catch(error => {
+                successMessage.textContent = 'ERROR: While Insering Data inserted into the database!';
+                console.error(error);
+            });
+        });
+        
+    </script>
+</body>
+</html>
